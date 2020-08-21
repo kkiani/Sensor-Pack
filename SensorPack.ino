@@ -11,29 +11,34 @@
 
 #include "sensor.h"
 #include "StatusBlink.h"
-#include "bluetooth.h"
+#include "lm35.h"
+#include "ble_network.h"
 
 StatusBlink statusLED(13);
+BLENetwork network;
 
 // -- Sensors
 DigitalSensor motion_sensor(7);
-
+LM35 temp_sensor(A1);
 
 void setup() {
   Serial.begin(9600);
   Serial.setTimeout(150);
 
-  setupNetwork();
+  network.setup();
   motion_sensor.setup();
+  temp_sensor.setup();
 }
 
 void loop() {
   if (motion_sensor.read()){
-    writeToNetwork(byte(0x30));
+    network.write(byte(0x30));
   } 
   else {
-    writeToNetwork(byte(0x31));
+    network.write(byte(0x31));
   }
+
+  Serial.println(temp_sensor.read());
 
   delay(1000);
 }
