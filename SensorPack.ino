@@ -40,5 +40,5 @@ void loop() {
 
   Serial.println(temp_sensor.read());
 
-  delay(1000);
+//  delay(1000);
 }
